@@ -9,6 +9,32 @@
   </head>
 
   <body>
+		
+  <div>
+  	<% if signed_in? %>
+  <!-- show current signed in email -->
+      <%= current_user.email %>
+  <!-- show sign in/out button -->
+      <%= link_to t(".sign_out"), destroy_user_session_path, method: :delete, :class => "btn btn-primary" %>
+    <% else %>
+      <%= link_to t(".sign_in"), new_user_session_path, :class => "btn btn-primary" %>
+    <% end %>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+     
+    <% if flash[:alert].present? %>    
+      <div class="alert alert-danger" role="alert">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+  </div>
+
     <%= yield %>
+
   </body>
 </html>
