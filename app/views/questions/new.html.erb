@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question-New</title>
+</head>
+<body>
+	<h1>New Question Page</h1>
+
+		<%= form_for @question do |q| %>
+			<%= q.label :title %>
+			<%= q.text_field :title, :class => "form-control" %>
+			<%= q.label :description %>
+			<%= q.text_area :description, :class => "form-control" %>
+			<%= q.label :source_url %>
+			<%= q.text_field :source_url, :class => "form-control" %>
+			<%= q.submit 'Save', :class => "btn btn-outline-primary" %>
+		<% end %>
+
+</body>
+</html>

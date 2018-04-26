@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question-Index</title>
+</head>
+<body>
+	<%= render partial: '/questions/form' %>
+	<h1>Question - Index</h1>
+	
+	<div class="text-center">
+		<% @websites.each do |website| %> 
+      <%= image_tag website.images.first %><br/>
+      <%= website.title %><br/>
+      <%= website.description %><br/>
+    <% end %>
+	</div>
+
+</body>
+</html>

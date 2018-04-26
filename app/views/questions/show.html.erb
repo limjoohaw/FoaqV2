@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question-Show</title>
+</head>
+<body>
+	<%= render partial: '/questions/form' %>
+	<h1>Question - Show</h1>
+
+	<div class="text-center">
+	  <%= image_tag @website.images.first %><br/>
+		<%= @website.title %><br/>
+	  <%= @website.description %><
+	  <h2><%= @question.title %></h2>
+	  <%= @question.description %>
+  </div>
+
+</body>
+</html>
