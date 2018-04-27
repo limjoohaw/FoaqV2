@@ -1,0 +1,9 @@
+	<div>
+		<%= link_to "Back", :back %>
+	</div>
+
+	<div>
+		<% if signed_in? %> <!-- && current_user.admin? -->
+			<%= link_to "New Question", new_question_path, :class => "btn btn-primary" %>
+		<% end %>
+	</div>

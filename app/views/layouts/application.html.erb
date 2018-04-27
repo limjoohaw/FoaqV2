@@ -9,17 +9,40 @@
   </head>
 
   <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="<%= root_path %>"><strong>FOAQ</strong></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <% if signed_in? %>
+          <!-- show current signed in email -->
+            <%= current_user.email %>
+          <!-- show sign in/out button -->
+            <%= link_to t("sign_out"), destroy_user_session_path, method: :delete %>
+          <% else %>
+            Kindly please
+            <%= link_to t("sign_in"), new_user_session_path %>
+            or
+            <%= link_to t("sign_up"), new_user_registration_path %>
+            an account.
+          <% end %>
+        </span>
+      </div>
+    </nav>
 		
   <div>
-  	<% if signed_in? %>
-  <!-- show current signed in email -->
-      <%= current_user.email %>
-  <!-- show sign in/out button -->
-      <%= link_to t(".sign_out"), destroy_user_session_path, method: :delete, :class => "btn btn-primary" %>
-    <% else %>
-      <%= link_to t(".sign_in"), new_user_session_path, :class => "btn btn-primary" %>
-    <% end %>
-
+  
     <% if flash[:notice].present? %>
       <div class="alert alert-success" role="alert">
         <%= flash[:notice] %>
