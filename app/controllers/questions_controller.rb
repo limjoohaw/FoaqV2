@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
 
 	def show
 		@question = Question.find(params[:id])
-		@website = LinkThumbnailer.generate(@question.source_url)
+		@website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
 	end	
 
 
