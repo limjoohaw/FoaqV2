@@ -14,14 +14,14 @@
 					<div class="card">
 							<% if question.linkthumbnailer['images'].present? %>
 					      <%= image_tag question.linkthumbnailer['images'].first['src'], :height => "300px" %>
+				      <div class="card-body">
 					      <%= question.linkthumbnailer['title'] %>
 							  <%= question.linkthumbnailer['description'] %>
-				      <% end %>
-				      <div class="card-body">
-								# <%= index + 1 %><br/>
-								Question Title : <%= question.title %><br/>
-								Question Description : <%= question.description %><br/>
 							</div>
+				      <% end %>
+							#<%= index + 1 %>
+							Title : <strong><%= question.title %></strong>
+							Description : <%= question.description.html_safe %>
 			    </div>
 		    <% end %>
 			</div>
