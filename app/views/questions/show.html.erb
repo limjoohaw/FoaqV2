@@ -8,13 +8,13 @@
 	<h1>Question - Show</h1>
 
 	<div class="text-center">
-		<%= @question.id %>
 		<% if @website %>
 		  <%= image_tag @website.images.first %><br/>
 			<%= @website.title %><br/>
 		  <%= @website.description %>
 	  <% end %>
 	  <h2><%= @question.title %></h2>
+		#<%= @question.id %>
 	  <%= @question.description %>
   </div>
 

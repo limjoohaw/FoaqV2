@@ -5,7 +5,10 @@ class QuestionsController < ApplicationController
 
 	def index
 		@questions = Question.all
-		@websites = @questions.map { |q| LinkThumbnailer.generate(q.source_url) }
+
+		@questions.each do |q|
+			q.website = LinkThumbnailer.generate(q.source_url) if q.source_url.present?
+		end
 	end
 
 	def new

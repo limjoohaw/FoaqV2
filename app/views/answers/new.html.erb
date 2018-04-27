@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Answer - New</title>
+</head>
+<body>
+	<h1>Answer - New</h1>
+
+  <%= form_for @answer do |f| %>
+    <%= f.label "Clarification" %> <br />
+    <%= f.trix_editor :response %> <br /><br />
+    <%= f.submit "Post" %>
+  <% end %>
+
+</body>
+</html>

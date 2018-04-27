@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Answer - Show</title>
+</head>
+<body>
+	<h1>Answer - Show</h1>
+	
+	Answer: <%= answer.response.html_safe %> |
+	<%= link_to "Edit", edit_answer_path(answer) %> |
+	<%= link_to"Delete", answer, method: :delete %>
+
+</body>
+</html>
