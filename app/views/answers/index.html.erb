@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Answer - Index</title>
+</head>
+<body>
+	<h1>Answer - Index</h1>
+	
+	<% @answers.each do |answer| %>
+    <p>
+	    From: <%#= user.nickname %> <br />
+	    Question: <%#= question.title %> <br />
+	    Answer: <%= answer.response.html_safe %> |
+	    <%= link_to "Edit", edit_answer_path(answer) %> |
+	    <%= link_to"Delete", answer, method: :delete %> <br />
+    </p>
+	<% end %>
+
+</body>
+</html>

@@ -8,10 +8,15 @@
 	<h1>Question - Index</h1>
 	
 	<div class="text-center">
-		<% @websites.each do |website| %> 
-      <%= image_tag website.images.first %><br/>
-      <%= website.title %><br/>
-      <%= website.description %><br/>
+		<% @questions.each_with_index do |question, index| %>
+			# : <%= index + 1 %><br/>
+			Question Title : <%= question.title %><br/>
+			Question Description : <%= question.description %><br/>
+				<% if question.website %><br/>
+		      <%= image_tag question.website.images.first, :width => "200" %><br/>
+		      <%= question.website.title %><br/>
+		      <%= question.website.description %><br/>
+	      <% end %>
     <% end %>
 	</div>
 
