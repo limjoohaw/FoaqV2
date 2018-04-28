@@ -2,6 +2,7 @@ require "link_thumbnailer"
 class QuestionsController < ApplicationController
 	
 	before_action :authenticate_user!, except: [:index, :show]
+	before_action :check_role, except: [:index, :show]
 
 	def index
 		@questions = Question.all
@@ -29,6 +30,7 @@ class QuestionsController < ApplicationController
 	def show
 		@question = Question.find(params[:id])
 		@website = @question.linkthumbnailer
+
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
 	end	
 
@@ -37,6 +39,12 @@ class QuestionsController < ApplicationController
 
 	def question_params
 	    params.require(:question).permit(:title, :description, :source_url, :linkthumbnailer)
+	end
+
+	def check_role
+		if current_user.respondent?
+			redirect_to root_path
+		end
 	end
 
 end

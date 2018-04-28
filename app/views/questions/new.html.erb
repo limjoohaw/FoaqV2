@@ -12,7 +12,7 @@
 			<%= q.label :description %>
 			<%= q.trix_editor :description, :class => "form-control" %>
 			<%= q.label :source_url %>
-			<%= q.text_field :source_url, :class => "form-control" %>
+			<%= q.text_field :source_url, :required => true, :class => "form-control" %>
 			<%= q.submit 'Save', :class => "btn btn-outline-primary" %>
 		<% end %>
 
