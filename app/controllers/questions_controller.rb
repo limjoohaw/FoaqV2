@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
 	before_action :check_role, except: [:index, :show]
 
 	def index
-		@questions = Question.all
+		@questions = Question.all.sort {|x,y| y.total_vote <=> x.total_vote}
 		# @questions.each do |q|
 		# 	q.website = LinkThumbnailer.generate(q.source_url) if q.source_url.present?
 		# end
@@ -31,7 +31,8 @@ class QuestionsController < ApplicationController
 	def show
 		@question = Question.find(params[:id])
 		@website = @question.linkthumbnailer
-
+		@user_voted = Vote.where(user_id: current_user.id, question_id: @question.id).count != 0
+		@total_vote = Vote.where(question_id: @question.id).count
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
 	end
 

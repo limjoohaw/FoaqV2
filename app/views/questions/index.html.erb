@@ -21,7 +21,8 @@
 				      <% end %>
 							#<%= index + 1 %>
 							Title : <strong><%= question.title %></strong>
-							Description : <%= question.description.html_safe %>
+							Description : <%= question.description.html_safe %><br />
+							Total Vote : <%= question.total_vote %>
 			    </div>
 		    <% end %>
 			</div>
