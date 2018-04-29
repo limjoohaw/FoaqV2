@@ -6,6 +6,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
   </head>
 
   <body>
@@ -15,7 +16,28 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      <% if signed_in? %>
+        <div class="btn-group">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            ! <span class="badge badge-light">
+                <%= @notifications.count %>
+            </span>
+          </button>
+
+          <% if @notifications.count != 0 %>
+            <div class="dropdown-menu">
+              <% @notifications.each do |n| %>
+                <li class="nav-link"><%= link_to n.key, question_path(Answer.find(n.notifiable_id).question) %></li>
+              <% end %>
+            </div>
+          <% end %>
+          
+        </div>
+      <% end %>
+      
       <div class="collapse navbar-collapse" id="navbarText">
+
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -24,6 +46,7 @@
             <a class="nav-link" href="#">Pricing</a>
           </li>
         </ul>
+
         <span class="navbar-text">
           <% if signed_in? %>
           <!-- show current signed in email -->
@@ -38,6 +61,7 @@
             an account.
           <% end %>
         </span>
+
       </div>
     </nav>
 		
