@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
 
 	def new
     @question = Question.new
+		@categories = Category.all
 	end
 
 	def create
@@ -38,7 +39,7 @@ class QuestionsController < ApplicationController
 	private
 
 	def question_params
-	    params.require(:question).permit(:title, :description, :source_url, :linkthumbnailer)
+	    params.require(:question).permit(:title, :description, :source_url, :linkthumbnailer, :category_id)
 	end
 
 	def check_role

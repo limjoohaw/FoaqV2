@@ -9,6 +9,7 @@
 		<%= form_for @question do |q| %>
 			<%= q.label :title %>
 			<%= q.text_field :title, :class => "form-control" %>
+			<%= q.select :category_id, @categories.map {|x| [x.name, x.id] }, :class => "form-control", :include_blank => "Please select" %>
 			<%= q.label :description %>
 			<%= q.trix_editor :description, :class => "form-control" %>
 			<%= q.label :source_url %>

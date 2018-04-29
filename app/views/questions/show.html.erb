@@ -14,8 +14,9 @@
 		  <%= @website['description'] %>
 	  <% end %>
 	  <h2><%= @question.title %></h2>
-		#<%= @question.id %>
-	  <%= @question.description.html_safe %>
+	  <p>Category :<%= @question.category.name %></p>
+		#<%= @question.id %><br/>
+	  Description :<%= @question.description.html_safe %>
 		
 		<!-- answer input section -->
 		<% if current_user.respondent? %>
