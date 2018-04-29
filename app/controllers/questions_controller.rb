@@ -39,7 +39,7 @@ class QuestionsController < ApplicationController
 	private
 
 	def question_params
-	    params.require(:question).permit(:title, :description, :source_url, :linkthumbnailer, :category_id)
+	    params.require(:question).permit(:title, :description, :source_url, :linkthumbnailer, :category_id, :respondent_id)
 	end
 
 	def check_role
