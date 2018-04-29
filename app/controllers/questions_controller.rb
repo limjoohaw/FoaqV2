@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
 		@website = @question.linkthumbnailer
 
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
-	end	
+	end
 
 
 	private

@@ -16,23 +16,42 @@
 	  <h2><%= @question.title %></h2>
 		#<%= @question.id %>
 	  <%= @question.description.html_safe %>
-  </div>
-	
-	<!-- answer input section -->
-	<% if current_user.respondent? %>
-	  <%= form_for [@question, Answer.new] do |f| %>
-		  <%= f.trix_editor :response %>
-		  <%= f.submit "Answer Now" %>
-	  <% end %>
-	<% else %>
-		<%= flash[:alert] %>
-	<% end %>
+		
+		<!-- answer input section -->
+		<% if current_user.respondent? %>
+		  <%= form_for [@question, Answer.new] do |f| %>
+			  <%= f.trix_editor :response %>
+			  <%= f.submit "Answer Now" %>
+		  <% end %>
+		<% else %>
+			<%= flash[:alert] %>
+		<% end %>
 
+		<!-- answer display section -->
+		<% if @question.answer.present? %>
+			<%= @question.answer.response.html_safe %>
+		<% end %>
+		<div class="share-section1">
+	 		 <div class="share-section2" >
+	 			 <div class="share-section3">
+	 				 <div class="share-section3-content">
+							<h3>Share This Post</h3>
+							<div class="post-share">
+								<a onclick="javascript:window.open('https://www.facebook.com/sharer/sharer.php?u=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+									<i class="fab fa-facebook-f" aria-hidden="true"></i>
+								</a>
+								<a onclick="javascript:window.open('https://twitter.com/intent/tweet?text=<%= @question.title %> by @someuser - &amp;url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+									<i class="fab fa-twitter" aria-hidden="true"></i>
+								</a>
+								<a onclick="javascript:window.open('https://plus.google.com/share?url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+									<i class="fab fa-google-plus-g" aria-hidden="true"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	<!-- answer display section -->
-	<% if @question.answer.present? %>
-		<%= @question.answer.response.html_safe %>
-	<% end %>
 	
 
 </body>
