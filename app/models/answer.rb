@@ -1,6 +1,7 @@
 class Answer < ApplicationRecord
 	belongs_to :question
 	belongs_to :user
+  before_destroy :destroy_notification
 	# acts_as_notifiable configures your model as ActivityNotification::Notifiable
   # with parameters as value or custom methods defined in your model as lambda or symbol.
   # The first argument is the plural symbol name of your target model.
@@ -25,4 +26,9 @@ class Answer < ApplicationRecord
   def question_notifiable_path
     question_path(question)
   end
+
+  def destroy_notification
+    self.user.notifications.destroy_all
+  end
+  
 end
