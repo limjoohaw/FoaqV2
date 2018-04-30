@@ -1,0 +1,9 @@
+<% @users.each do |u| %>
+	<div>
+		<div>Email : <%= u.email %></div>
+		<div>Nickname : <%= u.nickname %></div>
+		<div>Role : <%= u.role %></div>
+		<div><%= link_to "Edit", edit_user_path(u), :class => "btn btn-outline-secondary" %></div>
+		===================================
+	</div>
+<% end %>

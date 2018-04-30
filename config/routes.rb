@@ -9,5 +9,9 @@ Rails.application.routes.draw do
 	  resources :answers, only: [:create, :show]
 	  resources :votes, only: [:create]
 	end
-	
+
+	resources :users, except: [:create]
+
+	resources :categories
+
 end
