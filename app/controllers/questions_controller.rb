@@ -34,6 +34,7 @@ class QuestionsController < ApplicationController
 		@user_voted = Vote.where(user_id: current_user.id, question_id: @question.id).count != 0
 		@total_vote = Vote.where(question_id: @question.id).count
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
+		@pending_answer = Answer.where(question_id: @question.id).count == 0
 	end
 
 
