@@ -19,7 +19,7 @@
 	  Description :<%= @question.description.html_safe %>
 		
 		<!-- answer input section -->
-		<% if current_user.respondent? && @pending_answer %>
+		<% if @selected_respondent && current_user.respondent? && @pending_answer %>
 		  <%= form_for [@question, Answer.new] do |f| %>
 			  <%= f.trix_editor :response %>
 			  <%= f.submit "Answer Now" %>
@@ -37,7 +37,7 @@
 		
 		<div>
 			<!-- vote button -->
-			<% if @user_voted == false %>
+			<% if Time.now < @question_expired && @user_voted == false %>
 				<%= form_for [@question, Vote.new] do |f| %>
 					<button type="submit" class="btn btn-success"><%= "Vote" %></button>
 				<% end %>

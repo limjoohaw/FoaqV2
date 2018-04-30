@@ -1,0 +1,9 @@
+<%= form_for @user do |u| %>
+	<%= u.label :email %>
+	<%= u.text_field :email %>
+	<%= u.label :nickname %>
+	<%= u.text_field :nickname %>
+	<%= u.label :role %>
+	<%= u.text_field :role %>
+	<%= u.submit "Update", :class => "btn btn-primary" %>
+<% end %>

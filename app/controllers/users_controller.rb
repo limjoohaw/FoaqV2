@@ -1,27 +1,27 @@
 class UsersController < ApplicationController
-	
-	# def show
-	#   @user = current_user
-	#   @user_questions = @user.questions
-	#   @question = Question.new
-	# end
 
-	# def create
-	#   @user = User.find(params[:id])
+	def index
+		@users = User.all
+	end
 
-	#   @question = Question.new(question_params) 
-	#   @question.receiver = @user.id #This does not work 
-	#   if @question.save
-	#       redirect_to root_path
-	#   else
-	#       render 'new'
-	#   end
-	#  end
+	def edit
+		@user = User.find(params[:id])
+	end
 
-	# private
+	def update
+		@user = User.find(params[:id])
+		@user.update_attributes(allowed_params)
+		@next = users_path
+		@notice = "Update Successful"
 
-	# def question_params
-	#     params.require(:question).permit(:content, :user_id, :receiver)
-	# end
+		redirect_to @next, :notice => @notice
+	end
+
+
+	private
+
+	def allowed_params
+		params.require(:user).permit(:role, :nickname)
+	end
 
 end
