@@ -21,14 +21,29 @@
         <div class="btn-group">
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Message <span class="badge badge-light">
-                <%= @notifications.count %>
+                <%= @notifications.unopened_only.count %>
             </span>
           </button>
 
+          <!-- drop-down display notifications -->
           <% if @notifications.count != 0 %>
             <div class="dropdown-menu">
-              <% @notifications.each do |n| %>
-                <li class="nav-link"><%= link_to n.key, question_path(Answer.find(n.notifiable_id).question) %></li>
+
+              <!-- unopened notifications -->
+              <% @notifications_unopened.each do |nu| %>
+                <li class="nav-link">
+                  <div class="notification-unopened">
+                    <%= link_to nu.key, question_path(Answer.find(nu.notifiable_id).question) %>
+                  </div>
+                </li>
+              <% end %>  
+              <!-- opened notifications -->     
+              <% @notifications_opened.each do |no| %>
+                <li class="nav-link">
+                  <div>
+                    <%= link_to no.key, question_path(Answer.find(no.notifiable_id).question) %>
+                  </div>
+                </li>
               <% end %>
             </div>
           <% end %>
