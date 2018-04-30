@@ -20,9 +20,11 @@
 		
 		<!-- answer input section -->
 		<% if @selected_respondent && current_user.respondent? && @pending_answer %>
-		  <%= form_for [@question, Answer.new] do |f| %>
-			  <%= f.trix_editor :response %>
-			  <%= f.submit "Answer Now" %>
+			<% if Time.now > @question_expired %>
+			  <%= form_for [@question, Answer.new] do |f| %>
+				  <%= f.trix_editor :response %>
+				  <%= f.submit "Answer Now" %>
+			  <% end %>
 		  <% end %>
 		<% else %>
 			<%= flash[:alert] %>
