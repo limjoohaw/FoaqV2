@@ -9,23 +9,31 @@
 	
 	<div class="container">
 		<div class="row justify-content-center">
-			<div class="text-center">
+			<!-- <div class="text-center"> -->
 				<% @questions.each_with_index do |question, index| %>
 					<div class="card">
-							<% if question.linkthumbnailer['images'].present? %>
-					      <%= image_tag question.linkthumbnailer['images'].first['src'], :height => "300px" %>
-				      <div class="card-body">
-					      <%= question.linkthumbnailer['title'] %>
-							  <%= question.linkthumbnailer['description'] %>
+						<% if question.linkthumbnailer['images'].present? %>
+				      <%= image_tag question.linkthumbnailer['images'].first['src'], :height => "300px" %>
+			      <div class="card-body">
+				      <strong><%= question.linkthumbnailer['title'] %></strong>
+				      <a href="<%= question.source_url %>" target="_blank">Source link</a>
+						  <div><%= question.linkthumbnailer['description'] %></div> 
+						</div>
+			      <% end %>
+			      <div style="padding: 1rem;">
+				      <div>
+					      <div><%= link_to "Read", question_path(question), :class => "btn btn-success btn-sm" %>
+						      <div class="badge badge-dark" id="tag">#<%= question.category.name %></div>
+					      </div>
+								No. <strong><%= index + 1 %></strong>
+								<div style="float: right;">Total Vote : <strong><%= question.total_vote %></strong></div>
 							</div>
-				      <% end %>
-							#<%= index + 1 %>
-							Title : <strong><%= question.title %></strong>
-							Description : <%= question.description.html_safe %><br />
-							Total Vote : <%= question.total_vote %>
+							<p>Title : <strong><%= question.title %></strong><p>
+							<!-- <p>Description : <%#= question.description.html_safe %></p> -->
+						</div>
 			    </div>
 		    <% end %>
-			</div>
+			<!-- </div> -->
 		</div>
 	</div>
 

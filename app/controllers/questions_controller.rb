@@ -13,19 +13,19 @@ class QuestionsController < ApplicationController
 
 	def new
     @question = Question.new
-		@categories = Category.all
 	end
 
 	def create
     @question = current_user.questions.new(question_params)
     @question.linkthumbnailer = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
+    @notice = "Question create successful"
 			if @question.save
-      	redirect_to question_path(@question)
-      else
-      	flash[:alert] = @question.errors.full_messages.join(',')
-      	render :new
-      end
-    # @question.user_id = current_user.id
+	    	redirect_to question_path(@question)
+	    	flash[:notice] = @notice
+	    else
+	    	flash[:alert] = @question.errors.full_messages.join(',')
+	    	render :new
+	    end
 	end
 
 	def show
@@ -34,6 +34,7 @@ class QuestionsController < ApplicationController
 		@user_voted = Vote.where(user_id: current_user.id, question_id: @question.id).count != 0
 		@total_vote = Vote.where(question_id: @question.id).count
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
+		@pending_answer = Answer.where(question_id: @question.id).count == 0
 	end
 
 
@@ -48,5 +49,5 @@ class QuestionsController < ApplicationController
 			redirect_to root_path
 		end
 	end
-
+	
 end

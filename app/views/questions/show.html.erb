@@ -19,7 +19,7 @@
 	  Description :<%= @question.description.html_safe %>
 		
 		<!-- answer input section -->
-		<% if current_user.respondent? %>
+		<% if current_user.respondent? && @pending_answer %>
 		  <%= form_for [@question, Answer.new] do |f| %>
 			  <%= f.trix_editor :response %>
 			  <%= f.submit "Answer Now" %>
