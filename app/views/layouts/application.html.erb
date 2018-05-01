@@ -52,7 +52,7 @@
             <div class="dropdown-menu">
 
               <!-- unopened notifications -->
-              <% @notifications_unopened.each do |nu| %>
+              <% @notifications_unopened.limit(5).each do |nu| %>
                 <li class="nav-link">
                   <div class="notification-unopened">
                     <%= link_to nu.key, question_path(Answer.find(nu.notifiable_id).question, :opened_at => Time.now, :noti_id => nu.id)%>
@@ -60,7 +60,7 @@
                 </li>
               <% end %>  
               <!-- opened notifications -->     
-              <% @notifications_opened.each do |no| %>
+              <% @notifications_opened.limit(5).each do |no| %>
                 <li class="nav-link">
                   <div>
                     <%= link_to no.key, question_path(Answer.find(no.notifiable_id).question) %>
