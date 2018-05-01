@@ -6,85 +6,108 @@
 <body>
 	<%= render partial: '/questions/form' %>
 	<h1>Question - Show</h1>
+	<div class="row">
+  <div class="col-lg-2"></div>
 
-	<div class="text-center">
-		<% if @website['images'].present? %>
-		  <%= image_tag @website['images'].first['src'] %><br/>
-			<%= @website['title'] %><br/>
-		  <%= @website['description'] %>
-	  <% end %>
-	  <h2><%= @question.title %></h2>
-	  <p>Category :<%= @question.category.name %></p>
-		#<%= @question.id %><br/>
-	  Description :<%= @question.description.html_safe %>
-		
-		<!-- answer input section -->
-		<% if Date.today - @question.created_at.to_date < 1.day %>
-
-			<%  ## COUNT QUESTION WITH MAX VOTES%>
-			<%	arr = Vote.all.map {|x| x.question_id} %>
-			<%	freq = arr.inject(Hash.new(0)) { |h,v| h[v] += 1; h } %>
-			<%	q = arr.max_by { |v| freq[v] }%>
-			<%=	@question_max_votes = Question.find(q) %>
-			<% ## END %>
-
-				<% if @selected_respondent && current_user.respondent? && @pending_answer && @question_max_votes.id == @question.id %>
-					<% if Time.now > @question_expired %>
-					  <%= form_for [@question, Answer.new] do |f| %>
-						  <%= f.trix_editor :response %>
-						  <%= f.submit "Answer Now" %>
+    <div class="col-lg-5">
+      <div class="jumbotron jumbotron-fluid">
+	      <div class="container">
+		    	<h1> Source </h1>
+					<div class="text-center">
+						<% if @website['images'].present? %>
+						  <%= image_tag @website['images'].first['src'], :class => "xx" %>
+							<%= @website['title'] %><br/>
+						  <%= @website['description'] %>
 					  <% end %>
-				  <% end %>
-				<% else %>
-					<%= flash[:alert] %>
-				<% end %>
-
-		<% end %>
-
-		<div>
-			<!-- answer display section -->
-			<% if @question.answer.present? %>
-				<%= @question.answer.response.html_safe %>
-			<% end %>
-		</div>
-		
-		<div>
-			<!-- vote button -->
-			<% if Time.now < @question_expired && @user_voted == false %>
-				<%= form_for [@question, Vote.new] do |f| %>
-					<button type="submit" class="btn btn-success"><%= "Vote" %></button>
-				<% end %>
-			<% else %>
-				<em>You've voted for this question</em>
-			<% end %>
-		</div>
-		
-		<div>
-			<!-- vote count -->
-			Total vote : <%= @total_vote %>
-		</div>
-		<div class="share-section1">
-	 		 <div class="share-section2" >
-	 			 <div class="share-section3">
-	 				 <div class="share-section3-content">
-							<h3>Share This Post</h3>
-							<div class="post-share">
-								<a onclick="javascript:window.open('https://www.facebook.com/sharer/sharer.php?u=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
-									<i class="fab fa-facebook-f" aria-hidden="true"></i>
-								</a>
-								<a onclick="javascript:window.open('https://twitter.com/intent/tweet?text=<%= @question.title %> by @someuser - &amp;url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
-									<i class="fab fa-twitter" aria-hidden="true"></i>
-								</a>
-								<a onclick="javascript:window.open('https://plus.google.com/share?url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
-									<i class="fab fa-google-plus-g" aria-hidden="true"></i></a>
-							</div>
-						</div>
+				  </div>
+			  </div>
+		  </div>
+	  
+		  <div class="jumbotron jumbotron-fluid">
+	      <div class="container">
+					<div>
+						<!-- answer display section -->
+						<% if @question.answer.present? %>
+							<%= @question.answer.response.html_safe %>
+						<% end %>
 					</div>
 				</div>
 			</div>
 		</div>
 
-	
+    <div class="col-lg-4">
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+				  <h3><%= @question.title %></h3>
+				  <p>Category :<%= @question.category.name %></p>
+					#<%= @question.id %><br/>
+				  Description :<%= @question.description.html_safe %>
+					
+					<div>
+						<!-- vote button -->
+						<% if Time.now < @question_expired && @user_voted == false %>
+							<%= form_for [@question, Vote.new] do |f| %>
+								<button type="submit" class="btn btn-success"><%= "Vote" %></button>
+							<% end %>
+						<% else %>
+							<em>You've voted for this question</em>
+						<% end %>
+					</div>
+
+					<div>
+						<!-- vote count -->
+						Total vote : <%= @total_vote %>
+					</div>
+
+				</div>
+			</div>
+		</div>
+					
+		<div class="col-lg-1"></div>
+	</div>
+
+	<div class="share-section1">
+ 		<div class="share-section2" >
+ 			<div class="share-section3">
+ 				<div class="share-section3-content">
+					<h3>Share This Post</h3>
+					<div class="post-share">
+						<a onclick="javascript:window.open('https://www.facebook.com/sharer/sharer.php?u=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+							<i class="fab fa-facebook-f" aria-hidden="true"></i>
+						</a>
+						<a onclick="javascript:window.open('https://twitter.com/intent/tweet?text=<%= @question.title %> by @someuser - &amp;url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+							<i class="fab fa-twitter" aria-hidden="true"></i>
+						</a>
+						<a onclick="javascript:window.open('https://plus.google.com/share?url=<%= request.original_url %>', '_blank', 'width=800, height=500, top=200, left=300');void(0);">
+							<i class="fab fa-google-plus-g" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- answer input section -->
+		<% if Date.today - @question.created_at.to_date < 1.day %>
+			<%  ## COUNT QUESTION WITH MAX VOTES%>
+			<%	arr = Vote.all.map {|x| x.question_id} %>
+			<%	freq = arr.inject(Hash.new(0)) { |h,v| h[v] += 1; h } %>
+			<%	q = arr.max_by { |v| freq[v] }%>
+			<%	@question_max_votes = Question.find(q) %>
+			<% ## END %>
+
+				<% if @selected_respondent && current_user.respondent? && @pending_answer && @question_max_votes.id == @question.id %>
+			
+					  <%= form_for [@question, Answer.new] do |f| %>
+						  <%= f.trix_editor :response %>
+						  <%= f.submit "Answer Now" %>
+					  <% end %>
+				  
+				<% else %>
+					<%= flash[:alert] %>
+				<% end %>
+
+		<% end %>
 
 </body>
 </html>
