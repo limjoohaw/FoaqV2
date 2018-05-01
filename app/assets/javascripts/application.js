@@ -18,3 +18,19 @@
 //= require jquery_ujs
 //= require popper
 //= require bootstrap-sprockets
+  
+$(document).ready(function() {
+  setTimeout(function() {
+    $('#notice-wrapper').fadeOut('slow', function() {
+      $(this).remove();
+    });
+  }, 1500);
+});
+
+$(document).ready(function() {
+  setTimeout(function() {
+    $('#alert-wrapper').fadeOut('slow', function() {
+      $(this).remove();
+    });
+  }, 1500);
+});

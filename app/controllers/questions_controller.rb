@@ -30,6 +30,9 @@ class QuestionsController < ApplicationController
 
 	def show
 		@question = Question.find(params[:id])
+		if params[:opened_at]
+			current_user.notifications.find(params[:noti_id]).update(opened_at: params[:opened_at])
+		end
 		@website = @question.linkthumbnailer
 		@user_voted = Vote.where(user_id: current_user.id, question_id: @question.id).count != 0
 		@total_vote = Vote.where(question_id: @question.id).count
@@ -37,6 +40,10 @@ class QuestionsController < ApplicationController
 		@pending_answer = Answer.where(question_id: @question.id).count == 0
 		@question_expired = @question.created_at + 60.seconds
 		@selected_respondent = current_user.id == @question.respondent_id
+	end
+
+	def update_opened_at
+
 	end
 
 
