@@ -19,17 +19,28 @@
 	  Description :<%= @question.description.html_safe %>
 		
 		<!-- answer input section -->
-		<% if @selected_respondent && current_user.respondent? && @pending_answer %>
-			<% if Time.now > @question_expired %>
-			  <%= form_for [@question, Answer.new] do |f| %>
-				  <%= f.trix_editor :response %>
-				  <%= f.submit "Answer Now" %>
-			  <% end %>
-		  <% end %>
-		<% else %>
-			<%= flash[:alert] %>
+		<% if Date.today - @question.created_at.to_date < 1.day %>
+
+			<%  ## COUNT QUESTION WITH MAX VOTES%>
+			<%	arr = Vote.all.map {|x| x.question_id} %>
+			<%	freq = arr.inject(Hash.new(0)) { |h,v| h[v] += 1; h } %>
+			<%	q = arr.max_by { |v| freq[v] }%>
+			<%=	@question_max_votes = Question.find(q) %>
+			<% ## END %>
+
+				<% if @selected_respondent && current_user.respondent? && @pending_answer && @question_max_votes.id == @question.id %>
+					<% if Time.now > @question_expired %>
+					  <%= form_for [@question, Answer.new] do |f| %>
+						  <%= f.trix_editor :response %>
+						  <%= f.submit "Answer Now" %>
+					  <% end %>
+				  <% end %>
+				<% else %>
+					<%= flash[:alert] %>
+				<% end %>
+
 		<% end %>
-		
+
 		<div>
 			<!-- answer display section -->
 			<% if @question.answer.present? %>

@@ -1,9 +1,27 @@
-<%= form_for @user do |u| %>
-	<%= u.label :email %>
-	<%= u.text_field :email %>
-	<%= u.label :nickname %>
-	<%= u.text_field :nickname %>
-	<%= u.label :role %>
-	<%= u.text_field :role %>
-	<%= u.submit "Update", :class => "btn btn-primary" %>
-<% end %>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div class="form-signin", style="margin-top: 2rem">
+		<% if @user.avatar.exists? %>
+		 	<%= image_tag(@user.avatar.url :medium) %>
+	 	<% else %>
+	 		<%= image_tag "no-avatar.png", :width => "300" %> 
+	 	<% end %>
+
+		<%= form_for @user do |u| %>
+			<%= u.label :email %>
+			<%= u.text_field :email, :class => "form-control", :readonly => "true" %>
+			<%= u.label :nickname %>
+			<%= u.text_field :nickname, :class => "form-control" %>
+			<%= u.label :role %>
+			<%= u.text_field :role, :class => "form-control" %><br />
+			<%= u.file_field :avatar %>
+			<%= check_box_tag "_remove_picture", "1" %>Remove Picture
+			<%= u.submit 'Update', :class => "form-control btn btn-outline-secondary" %>	
+		<% end %>
+	</div>
+</body>
+</html>

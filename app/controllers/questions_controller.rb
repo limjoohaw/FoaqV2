@@ -38,7 +38,7 @@ class QuestionsController < ApplicationController
 		@total_vote = Vote.where(question_id: @question.id).count
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
 		@pending_answer = Answer.where(question_id: @question.id).count == 0
-		@question_expired = @question.created_at + 60.seconds
+		@question_expired = @question.created_at + 0.day
 		@selected_respondent = current_user.id == @question.respondent_id
 	end
 
