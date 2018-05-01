@@ -10,6 +10,26 @@
   </head>
 
   <body>
+    <!-- flash notice / alert -->
+    <div id="notice-wrapper">
+      <% if flash[:notice].present? %>
+        <div class="notice" role="alert">
+          <!-- alert alert-success -->
+          <p><%= flash[:notice] %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="alert-wrapper">
+      <% if flash[:alert].present? %>
+        <div class="alert" role="alert">
+          <!-- alert alert-danger -->
+          <p><%= flash[:alert] %></p>
+        </div>
+      <% end %> 
+    </div>  
+        
+     
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="<%= root_path %>"><strong>FOAQ</strong></a>
@@ -19,69 +39,79 @@
 
       <% if signed_in? %>
         <div class="btn-group">
+        
+          <!-- drop-down button -->
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Message <span class="badge badge-light">
-                <%= @notifications.count %>
+                <%= @notifications.unopened_only.count %>
             </span>
           </button>
 
+          <!-- drop-down display notifications -->
           <% if @notifications.count != 0 %>
             <div class="dropdown-menu">
-              <% @notifications.each do |n| %>
-                <li class="nav-link"><%= link_to n.key, question_path(Answer.find(n.notifiable_id).question) %></li>
+
+              <!-- unopened notifications -->
+              <% @notifications_unopened.limit(5).each do |nu| %>
+                <li class="nav-link">
+                  <div class="notification-unopened">
+                    <%= link_to nu.key, question_path(Answer.find(nu.notifiable_id).question, :opened_at => Time.now, :noti_id => nu.id)%>
+                  </div>
+                </li>
+              <% end %>  
+              <!-- opened notifications -->     
+              <% @notifications_opened.limit(5).each do |no| %>
+                <li class="nav-link">
+                  <div>
+                    <%= link_to no.key, question_path(Answer.find(no.notifiable_id).question) %>
+                  </div>
+                </li>
               <% end %>
             </div>
           <% end %>
-          
+
         </div>
       <% end %>
       
+
       <div class="collapse navbar-collapse" id="navbarText">
-
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-        </ul>
-
-        <span class="navbar-text">
           <% if signed_in? %>
-          <!-- show current signed in email -->
-            <%= current_user.email %>
-          <!-- show sign in/out button -->
-            <%= link_to t("sign_out"), destroy_user_session_path, method: :delete %>
-          <% else %>
-            Kindly please
-            <%= link_to t("sign_in"), new_user_session_path %>
-            or
-            <%= link_to t("sign_up"), new_user_registration_path %>
-            an account.
-          <% end %>
-        </span>
+            <li class="nav-item active"><%= link_to "My Question", questions_path, :class => "nav-link" %></li>
+            <li class="nav-item active"><%= link_to "My Profile", edit_user_path(current_user), :class => "nav-link" %></li>
+        </ul>
+            <span class="navbar-text", style="float: right;">
+              <!-- show current signed in email -->
+              <%= current_user.email %>
+              <!-- show sign in/out button -->
+              <%= link_to t("sign_out"), destroy_user_session_path, method: :delete %>
+            </span>
+            <% else %>
+            <span class="navbar-text", style="float: right;">
+              Kindly please
+              <%= link_to t("sign_in"), new_user_session_path %>
+              or
+              <%= link_to t("sign_up"), new_user_registration_path %>
+              an account.
+            </span>
+            <% end %>
+           
 
+        <% if signed_in? && current_user.avatar.file? %>
+        <!-- show current_user avatar -->
+          <%= image_tag current_user.avatar.url(:thumb), :class => "avatar" %>
+        <% end %>
+          
       </div>
     </nav>
-		
-  <div>
-  
-    <% if flash[:notice].present? %>
-      <div class="alert alert-success" role="alert">
-        <%= flash[:notice] %>
-      </div>
-    <% end %>
-     
-    <% if flash[:alert].present? %>    
-      <div class="alert alert-danger" role="alert">
-        <%= flash[:alert] %>
-      </div>
-    <% end %>
 
-  </div>
+    <div style="position: fixed; right: 1rem; bottom: 1rem;"><a href="#">Top</a></div>
 
     <%= yield %>
 
   </body>
 </html>
+
+        
+
+    

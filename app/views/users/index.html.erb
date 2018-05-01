@@ -1,5 +1,12 @@
 <% @users.each do |u| %>
 	<div>
+		<div>
+			<% if u.avatar.exists? %>
+			 	<%= image_tag(u.avatar.url :medium) %>
+		 	<% else %>
+		 		<%= image_tag "no-avatar.png", :width => "300" %> 
+		 	<% end %>
+		</div>
 		<div>Email : <%= u.email %></div>
 		<div>Nickname : <%= u.nickname %></div>
 		<div>Role : <%= u.role %></div>

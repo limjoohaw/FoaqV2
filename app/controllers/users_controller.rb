@@ -10,8 +10,11 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
+		if params[:_remove_picture] == "1"
+			@user.avatar = nil
+		end
 		@user.update_attributes(allowed_params)
-		@next = users_path
+		@next = edit_user_path
 		@notice = "Update Successful"
 
 		redirect_to @next, :notice => @notice
@@ -21,7 +24,7 @@ class UsersController < ApplicationController
 	private
 
 	def allowed_params
-		params.require(:user).permit(:role, :nickname)
+		params.require(:user).permit(:role, :nickname, :avatar)
 	end
 
 end
