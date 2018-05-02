@@ -88,7 +88,9 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active"><%= link_to "Show All Question", questions_path, :class => "nav-link" %></li>
           </ul>
-          <div style="margin-right: 0.5rem;"><%= link_to "Ask a Question", new_question_path, :class => "btn-info btn-sm" %></div>
+          <% if signed_in? && current_user.role != "R" %>
+            <div style="margin-right: 0.5rem;"><%= link_to "Ask a Question", new_question_path, :class => "btn-info btn-sm" %></div>
+          <% end %>
           <div class="nav-item active"><%= link_to "My Profile", edit_user_path(current_user), :class => "nav-link" %></div>
           <span class="navbar-text", style="float: right;">
             <!-- show current signed in email -->

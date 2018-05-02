@@ -11,7 +11,7 @@
 
     <div class="col-lg-5">
       <div class="jumbotron jumbotron-fluid">
-	      <div class="container">
+	      <div class="card-body">
 		    	<h1> Source </h1>
 					<div class="text-center">
 						<% if @website['images'].present? %>
@@ -22,22 +22,43 @@
 				  </div>
 			  </div>
 		  </div>
-	  
+
 		  <div class="jumbotron jumbotron-fluid">
 	      <div class="container">
 					<div>
+		       	<p>Answered by :</p>
+		       	<% if @respondent_avatar.avatar.url.blank? %>
+		        	<%= image_tag @respondent_avatar.avatar.url(:thumb), :class => "question_avatar" %>
+	        	<% else %>
+					 		<%= image_tag "no-avatar.png", :width => "100" %> 
+					 	<% end %>
+        		<p class="question_avatar">Respondent : <%= @respondent_avatar.nickname %></p>
 						<!-- answer display section -->
+						<h2>Answer :</h2>
 						<% if @question.answer.present? %>
-							<%= @question.answer.response.html_safe %>
+							<%= @question.answer.response.html_safe %><br/>
+								<p>Answered at: <%= @question.answer.created_at.to_date %></p>
+							<% elsif @question_expired > Time.now  %>
+								<strong><%= "This question is in voting stage" %></strong>
+							<% else %>
+								<strong><%= "Answer is still pending" %></strong>
 						<% end %>
 					</div>
 				</div>
 			</div>
+
 		</div>
 
     <div class="col-lg-4">
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
+
+
+        Question #<%= @question.id %> by:<br/>
+		       <%= image_tag @interragator_avatar.avatar.url(:thumb), :class => "question_avatar" %><br/>    
+		       <%= @interragator_avatar.nickname %><br/>
+         <span style="font-size: 1em;"><em>Created at:
+                      <%= @question.created_at.to_date %></em>
 				  <h3><%= @question.title %></h3>
 				  <p>Category :<%= @question.category.name %></p>
 					#<%= @question.id %><br/>
@@ -49,8 +70,10 @@
 							<%= form_for [@question, Vote.new] do |f| %>
 								<button type="submit" class="btn btn-success"><%= "Vote" %></button>
 							<% end %>
+						<% elsif @user_voted == true %>
+							<em>Thank you for your vote!</em>
 						<% else %>
-							<em>You've voted for this question</em>
+							<em>Vote expired</em>
 						<% end %>
 					</div>
 
@@ -58,7 +81,11 @@
 						<!-- vote count -->
 						Total vote : <%= @total_vote %>
 					</div>
-
+					<br/>
+					<p>
+	          Voting ends at:
+	          <%= @question_expired.to_date %>
+          </p>
 				</div>
 			</div>
 		</div>
