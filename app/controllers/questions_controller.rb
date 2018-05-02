@@ -1,8 +1,8 @@
 require "link_thumbnailer"
 class QuestionsController < ApplicationController
 	
-	before_action :authenticate_user!, except: [:index, :show]
-	before_action :check_role, except: [:index, :show]
+	before_action :authenticate_user!, except: [:index, :show, :searchresult]
+	before_action :check_role, except: [:index, :show, :searchresult]
 
 	def index
 		@questions = Question.all.sort {|x,y| y.total_vote <=> x.total_vote}
@@ -38,12 +38,16 @@ class QuestionsController < ApplicationController
 		@total_vote = Vote.where(question_id: @question.id).count
 		# @website = LinkThumbnailer.generate(@question.source_url) if @question.source_url.present?
 		@pending_answer = Answer.where(question_id: @question.id).count == 0
-		@question_expired = @question.created_at + 1.minutes
+		@question_expired = @question.created_at + 3.minutes
 		@selected_respondent = current_user.id == @question.respondent_id
 	end
 
-	def update_opened_at
+	def searchresult
+		# @questions = Question.user.where('nickname ilike ?', "%" + params[:searchkey] + "%")
+		# @questions += Question.category.where('name ilike ?', "%" + params[:searchkey] + "%")
+		# @questions.uniq!
 
+		# SELECT * FROM questions WHERE country LIKE "%params[:searchkey]%" AND name LIKE "%params[:searchkey]%"
 	end
 
 

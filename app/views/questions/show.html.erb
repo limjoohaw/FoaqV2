@@ -15,7 +15,7 @@
 		    	<h1> Source </h1>
 					<div class="text-center">
 						<% if @website['images'].present? %>
-						  <%= image_tag @website['images'].first['src'], :class => "xx" %>
+						  <%= image_tag @website['images'].first['src'], :class => "question-show-image" %><br/>
 							<%= @website['title'] %><br/>
 						  <%= @website['description'] %>
 					  <% end %>
@@ -88,7 +88,7 @@
 	</div>
 
 		<!-- answer input section -->
-		<% if Date.today - @question.created_at.to_date < 1.day %>
+		<% if Date.today - @question.created_at.to_date > 1.day %>
 			<%  ## COUNT QUESTION WITH MAX VOTES%>
 			<%	arr = Vote.all.map {|x| x.question_id} %>
 			<%	freq = arr.inject(Hash.new(0)) { |h,v| h[v] += 1; h } %>
