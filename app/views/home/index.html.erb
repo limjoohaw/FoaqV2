@@ -27,10 +27,10 @@
 	  </div>
 	</div>
 
-		<!-- top vote -->
+		<!-- new ask question -->
 		<div class="row justify-content-center">
 		
-		<h2 class="home-h-left">#Ranking</h2>
+		<h2 class="home-h-left">#Just Ask</h2>
 			<div class="col-lg-2">
 				<% @questions.each_with_index do |question, index| %>
 					<div class="col-lg-5">
@@ -52,6 +52,7 @@
 									<div style="float: right;">Total Vote : <strong><%= question.total_vote %></strong></div>
 								</div>
 								<p>Title : <strong><%= question.title %></strong></p>
+								<em>Created at : <%= question.created_at.to_date %></em>
 							</div>
 				    </div>
 					</div>
