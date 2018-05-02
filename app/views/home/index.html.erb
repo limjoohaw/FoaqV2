@@ -10,8 +10,8 @@
 			<div class="carousel-item active">
 			 <div class="jumbotron jumbotron-fluid" id="s1">
 			  <div class="container">
-			    <h1 class="display-4">Book unique homes and experiences all over the world.</h1>
-			    <span class="lead">Book a top-rated home that offers reservation flexibility and work-trip essentials.</span>
+			    <h1 class="display-4">Welcome to FOAQ</h1>
+			    <span class="lead">Ask > Vote > Maybe Bill Gates will reply your answer !</span>
 			  </div>
 			 </div>
 			</div>
@@ -27,10 +27,76 @@
 	  </div>
 	</div>
 
-	<h1>Welcome to FOAQ</h1>
+		<!-- new ask question -->
+		<div class="row justify-content-center">
+		
+		<h2 class="home-h-left">#Just Ask</h2>
+			<div class="col-lg-2">
+				<% @questions.each_with_index do |question, index| %>
+					<div class="col-lg-5">
+						<div class="card" id="home-card">
+							<% if question.linkthumbnailer['images'].present? %>
+					      <%= image_tag question.linkthumbnailer['images'].first['src'], :class => "card-image" %>
+				      <div class="card-body">
+					      <strong><%= question.linkthumbnailer['title'] %></strong>
+					      <a href="<%= question.source_url %>" target="_blank">Source link</a>
+							  <div><%= question.linkthumbnailer['description'] %></div> 
+							</div>
+				      <% end %>
+				      <div style="padding: 1rem;">
+					      <div>
+						      <div><%= link_to "Read", question_path(question), :class => "btn btn-success btn-sm" %>
+							      <div class="badge badge-dark" id="tag">#<%= question.category.name %></div>
+						      </div>
+									Most Votes. <strong><%= index + 1 %></strong>
+									<div style="float: right;">Total Vote : <strong><%= question.total_vote %></strong></div>
+								</div>
+								<p>Title : <strong><%= question.title %></strong></p>
+								<em>Created at : <%= question.created_at.to_date %></em>
+							</div>
+				    </div>
+					</div>
+		    <% end %>
+			</div>
+			<div class="col-lg-3"></div>
 
-	<%= link_to "Ask a Question", new_question_path %> |
-	<%= link_to "All Question", questions_path %> |
+		</div>
 
+		<!-- just cooked -->
+		<div class="row justify-content-center">
+		
+			<h2 class="home-h-right">#Just<br/>Answered</h2>
+			<div class="col-lg-1"></div>
+				<div class="col-lg-2">
+					<% @answers.limit(5).each_with_index do |answer, index| %>
+						<!-- <div class="col-lg-5"> -->
+							<div class="card" id="home-card">
+								<% if answer.question.linkthumbnailer['images'].present? %>
+						      <%= image_tag answer.question.linkthumbnailer['images'].first['src'], :class => "card-image" %>
+					      <div class="card-body">
+						      <strong><%= answer.question.linkthumbnailer['title'] %></strong>
+						      <a href="<%= answer.question.source_url %>" target="_blank">Source link</a>
+								  <div><%= answer.question.linkthumbnailer['description'] %></div> 
+								</div>
+					      <% end %>
+					      <div style="padding: 1rem;">
+						      <div>
+							      <div><%= link_to "Read", question_path(answer.question), :class => "btn btn-success btn-sm" %>
+								      <div class="badge badge-dark" id="tag">#<%= answer.question.category.name %></div>
+							      </div>
+										Hot. <strong><%= index + 1 %></strong>
+										<div style="float: right;">Total Vote : <strong><%= answer.question.total_vote %></strong></div>
+									</div>
+									<p>Title : <strong><%= answer.question.title %></strong></p>
+								</div>
+					    </div>
+						<!-- </div> -->
+			    <% end %>
+				</div>
+				<div class="col-lg-4" id="home-col-lg-4"></div>
+
+		</div>
+
+		
 </body>
 </html>

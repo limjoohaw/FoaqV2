@@ -5,23 +5,24 @@
 </head>
 <body>
 	<h1>New Question Page</h1>
+	<div class="form-signin-question">
+				<%= form_for @question do |q| %>
+					<p><%= q.label :title %>
+					<%= q.text_field :title, :class => "form-control" %></p>
 
-		<%= form_for @question do |q| %>
-			<%= q.label :title %>
-			<%= q.text_field :title, :class => "form-control" %>
+					<!-- select question category -->
+					<%= q.select :category_id, Category.all.map {|c| [c.name, c.id] }, :class => "form-control", :prompt => "Please select a category" %>
 
-			<!-- select question category -->
-			<%= q.select :category_id, Category.all.map {|c| [c.name, c.id] }, :class => "form-control", :prompt => "Please select a category" %>
+					<!-- select respondent -->
+					<%= q.select :respondent_id, User.where(role: "R").map {|r| [r.nickname, r.id] }, :class => "form-control", :prompt => "Please select a respondent" %><br />
 
-			<!-- select respondent -->
-			<%= q.select :respondent_id, User.where(role: "R").map {|r| [r.nickname, r.id] }, :class => "form-control", :prompt => "Please select a respondent" %>
-
-			<%= q.label :description %>
-			<%= q.trix_editor :description, :class => "form-control" %>
-			<%= q.label :source_url %>
-			<%= q.text_field :source_url, :required => true, :class => "form-control" %>
-			<%= q.submit 'Save', :class => "btn btn-outline-primary" %>
-		<% end %>
+					<p><%= q.label :description %>
+					<%= q.trix_editor :description, :class => "form-control" %></p>
+					<p><%= q.label :source_url %>
+					<%= q.text_field :source_url, :required => true, :class => "form-control" %></p>
+					<%= q.submit 'Save', :class => "btn btn-outline-primary" %>
+				<% end %>
+		</div>
 
 </body>
 </html>

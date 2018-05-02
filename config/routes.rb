@@ -14,4 +14,6 @@ Rails.application.routes.draw do
 
 	resources :categories
 
+	get "/searchresult" => "questions#searchresult"
+
 end

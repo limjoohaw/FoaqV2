@@ -1,5 +1,6 @@
 class VotesController < ApplicationController
-	before_action :check_user
+  before_action :authenticate_user!
+	# before_action :check_user
 
 	def create
     @vote = Vote.new
