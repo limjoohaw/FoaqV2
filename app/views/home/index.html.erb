@@ -78,7 +78,7 @@
 			<div class="col-lg-1"></div>
 				<div class="col-lg-2">
 					<% @answers.limit(5).each_with_index do |answer, index| %>
-						<!-- <div class="col-lg-5"> -->
+						<% if answer.question != nil %>
 							<div class="card" id="home-card">
 								<% if answer.question.linkthumbnailer['images'].present? %>
 						      <%= image_tag answer.question.linkthumbnailer['images'].first['src'], :class => "card-image" %>
@@ -105,6 +105,7 @@
 									</div>
 								</div>
 					    </div>
+				    <% end %>
 			    <% end %>
 				</div>
 				<div class="col-lg-4" id="home-col-lg-4"></div>
