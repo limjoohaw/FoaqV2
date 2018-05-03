@@ -9,7 +9,7 @@
 	  <div class="carousel-inner">
 			<div class="carousel-item active">
 			 <div class="jumbotron jumbotron-fluid" id="s1">
-			  <div class="container">
+			  <div class="container" id="carousel-word">
 			    <h1 class="display-4">Welcome to FOAQ</h1>
 			    <span class="lead">Ask > Vote > Maybe Bill Gates will reply your answer !</span>
 			  </div>
@@ -18,7 +18,7 @@
 
 			<div class="carousel-item">
 			 <div class="jumbotron jumbotron-fluid" id="s2">
-			  <div class="container">
+			  <div class="container" id="carousel-word">
 			    <h1 class="display-4">Relak la bro ~</h1>
 			    <span class="lead">Take a brake after the bootcamp, but dont forget to keep coding</span>
 			  </div>
@@ -28,16 +28,16 @@
 	</div>
 
 		<!-- new ask question -->
-		<div class="row justify-content-center">
+		<div class="row justify-content-center" id="home-content">
 		
 		<h2 class="home-h-left">#Just Ask</h2>
 			<div class="col-lg-2">
-				<% @questions.each_with_index do |question, index| %>
+				<% @questions.limit(3).each_with_index do |question, index| %>
 					<div class="col-lg-5">
 						<div class="card" id="home-card">
 							<% if question.linkthumbnailer['images'].present? %>
 					      <%= image_tag question.linkthumbnailer['images'].first['src'], :class => "card-image" %>
-				      <div class="card-body">
+				      <div class="card-body card-content-display">
 					      <strong><%= question.linkthumbnailer['title'] %></strong>
 					      <a href="<%= question.source_url %>" target="_blank">Source link</a>
 							  <div><%= question.linkthumbnailer['description'] %></div> 
@@ -48,11 +48,20 @@
 						      <div><%= link_to "Read", question_path(question), :class => "btn btn-success btn-sm" %>
 							      <div class="badge badge-dark" id="tag">#<%= question.category.name %></div>
 						      </div>
-									Most Votes. <strong><%= index + 1 %></strong>
-									<div style="float: right;">Total Vote : <strong><%= question.total_vote %></strong></div>
+						      <hr />
+						      <i class="fas fa-trophy" style="color: #ff0090;"></i>
+									<strong><%= index + 1 %></strong>
+						      <div style="float: right;">
+										<p class="far btn-block">
+											<i class="far fa-hand-point-up"></i>&nbsp;<%= question.total_vote %>
+										</p>
+									</div>
 								</div>
-								<p>Title : <strong><%= question.title %></strong></p>
-								<em>Created at : <%= question.created_at.to_date %></em>
+								<p><strong><%= question.title %></strong></p>
+								<i class="fas fa-pen-square"></i>
+								<em>by <%= question.user.nickname %> @ <%= question.created_at.to_date %></em><br/>
+								<i class="fas fa-clock" style="color: blue;"></i>
+								<em>voted end @ <%= (question.created_at + 5.minutes).to_date %></em>
 							</div>
 				    </div>
 					</div>
@@ -69,11 +78,11 @@
 			<div class="col-lg-1"></div>
 				<div class="col-lg-2">
 					<% @answers.limit(5).each_with_index do |answer, index| %>
-						<!-- <div class="col-lg-5"> -->
+						<% if answer.question != nil %>
 							<div class="card" id="home-card">
 								<% if answer.question.linkthumbnailer['images'].present? %>
 						      <%= image_tag answer.question.linkthumbnailer['images'].first['src'], :class => "card-image" %>
-					      <div class="card-body">
+					      <div class="card-body card-content-display">
 						      <strong><%= answer.question.linkthumbnailer['title'] %></strong>
 						      <a href="<%= answer.question.source_url %>" target="_blank">Source link</a>
 								  <div><%= answer.question.linkthumbnailer['description'] %></div> 
@@ -84,19 +93,24 @@
 							      <div><%= link_to "Read", question_path(answer.question), :class => "btn btn-success btn-sm" %>
 								      <div class="badge badge-dark" id="tag">#<%= answer.question.category.name %></div>
 							      </div>
-										Hot. <strong><%= index + 1 %></strong>
-										<div style="float: right;">Total Vote : <strong><%= answer.question.total_vote %></strong></div>
+							      <hr />
+								      <div style="float: right;">
+												<p class="far btn-block">
+													<i class="far fa-hand-point-up"></i>&nbsp;<%= answer.question.total_vote %>
+												</p>
+											</div>
+										<p><strong><%= answer.question.title %></strong></p>
+										<i class="fas fa-reply"></i>
+										<em>by <%= answer.user.nickname %> @ <%= answer.created_at.to_date %></em><br/>
 									</div>
-									<p>Title : <strong><%= answer.question.title %></strong></p>
 								</div>
 					    </div>
-						<!-- </div> -->
+				    <% end %>
 			    <% end %>
 				</div>
 				<div class="col-lg-4" id="home-col-lg-4"></div>
 
 		</div>
-
 		
 </body>
 </html>

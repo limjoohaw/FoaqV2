@@ -5,80 +5,122 @@
 </head>
 <body>
 	<%= render partial: '/questions/form' %>
-	<h1>Question - Index</h1>
+	<div class="carousel slide" data-ride="carousel">
+	  <div class="carousel-inner">
+			<div class="carousel-item active">
+			 <div class="jumbotron jumbotron-fluid" id="question-index-pic">
+			  <div class="container" id="carousel-word">
+			    <h1 class="display-4">All you need to know and ask just 1 in our app</h1>
+			    <span class="lead">Ask > Vote > Maybe Bill Gates will reply your answer !</span>
+			  </div>
+			 </div>
+			</div>
+		</div>
+	</div>
 	
-	<!-- <div class="container"> -->
 	<div class="row">
   	<div class="col-lg-1"></div>
+			<!-- trending question top 5-->
   		<div class="col-lg-5">
-  			<div class="jumbotron jumbotron-fluid" style="background-color: transparent; border-right: 1px solid black; ">
+  			<div class="jumbotron jumbotron-fluid" style="background-color: transparent; border-right: 0.2rem solid lightgrey; ">
 	      	<div class="container">
-  					<center> <h2> Trending Questions </h2> </center>
-  						<div class="row justify-content-center">
-							<% @questions.each_with_index do |question, index| %>
-								<div class="jumbotron jumbotron-fluid" style="background-color: grey; padding: 3px;">
-	      					<div class="container">
-										<div class="card">
-										<% if question.linkthumbnailer['images'].present? %>
-					      			<%= image_tag question.linkthumbnailer['images'].first['src'], :height => "300px" %>
-						      		<div class="card-body">
-							      	<strong><%= question.linkthumbnailer['title'] %></strong>
-							      	<a href="<%= question.source_url %>" target="_blank">Source link</a>
-										  <div><%= question.linkthumbnailer['description'] %></div> 
-											</div>
-				      			<% end %>
-				      					<div style="padding: 1rem;">
-						      				<div><%= link_to "Read", question_path(question), :class => "btn btn-success btn-sm" %>
-								     	 		 <div class="badge badge-dark" id="tag">#<%= question.category.name %></div>
-													 No. <strong><%= index + 1 %></strong>
-													 <div style="float: right;">Total Vote : <strong><%= question.total_vote %></strong></div>
+  					<center>
+  					 <i class="fas fa-trophy" style="font-size: 10rem; color: #ff0090;"></i>
+  					 <h2>Trending Questions</h2>
+					  </center>
+  						<div class="row justify-content-center" style="margin-right: 2rem;">
+								<% @questions.each_with_index do |question, index| %>
+									<div class="jumbotron jumbotron-fluid" id="trending-card-background">
+		      					<div class="container">
+											<div class="card">
+												<% if question.linkthumbnailer['images'].present? %>
+							      			<%= image_tag question.linkthumbnailer['images'].first['src'], :height => "300px" %>
+								      		<div class="card-body card-content-display">
+										      	<strong><%= question.linkthumbnailer['title'] %></strong>
+										      	<a href="<%= question.source_url %>" target="_blank">Source from</a>
+													  <div><%= question.linkthumbnailer['description'] %></div> 
 													</div>
-											<p>Title : <strong><%= question.title %></strong></p> <br />
-													<!-- <p>Description : <%#= question.description.html_safe %></p> -->
+						      			<% end %>
+				      					<div class="card-body card-content-display">
+					      					<span>
+												    <%= link_to "Read", question_path(question), :class => "btn btn-success btn-sm" %>
+												    <i class="far fa-hand-point-up" style="float: right;">&nbsp;<%= question.total_vote %></i>
+											    </span>
+											    <!-- make a line to seperate -->
+											    <hr />
+											    <p>
+														<i class="fas fa-thumbtack" style="color: red; transform: rotate(45deg);"></i>
+														<strong>&nbsp;<%= index + 1 %></strong>
+											    </p>
+													<p><i class="fas fa-question-circle"></i>&nbsp;<strong><%= question.title %></strong></p>
+											    <span class="badge badge-dark" id="tag">#<%= question.category.name %></span>
+												    <span>
+													    <i class="fas fa-pencil-alt"></i>
+													    <em>&nbsp;by <%= question.user.nickname %> @ <%= question.created_at.to_date %></em>
+												    </span>
 												</div>
-				    				</div>
-				    			</div>
-				    		</div>
-			   				 <% end %>
-				<!-- </div> -->
+											    <div style="padding-bottom: 1rem;"></div>
+													
+					    				</div>
+					    			</div>
+					    		</div>
+		   					<% end %>
+
 							</div>
   					</div>
 			  	</div>
+			  	<button class="btn btn-outline-primary btn-block">Show more</button>
   			</div>
+
+			<!-- just answer last 5 -->
   		<div class="col-lg-5">
   			<div class="jumbotron jumbotron-fluid" style="background-color: transparent;">
 	  			<div class="container">
-  					<center> <h2> Latest Answer </h2> </center>
-  					 <div class="row justify-content-center">
-						 <% @answers.limit(5).each_with_index do |answer, index| %>
-  					  <div class="jumbotron jumbotron-fluid" style="background-color: gray; padding: 3px;">
-	      			 <div class="container">
-								 <div class="card">
-									<% if answer.question.linkthumbnailer['images'].present? %>
-					      	<%= image_tag answer.question.linkthumbnailer['images'].first['src'], :height => "300px" %>
-						       <div class="card-body">
-							      <strong><%= answer.question.linkthumbnailer['title'] %></strong>
-							      <a href="<%= answer.question.source_url %>" target="_blank">Source link</a>
-							     	 <div><%= answer.question.linkthumbnailer['description'] %></div> 
+						<center>
+							<i class="fas fa-sort-amount-up" style="font-size: 10rem; color: Green;"></i>
+							<h2>Latest Answer</h2>
+						</center>
+  					<div class="row justify-content-center">
+							<% @answers.limit(5).each do |answer| %>
+	  					  <div class="jumbotron jumbotron-fluid" id="latest-answer-card-background">
+		      				<div class="container">
+										<div class="card">
+											<% if answer.question.linkthumbnailer['images'].present? %>
+								      	<%= image_tag answer.question.linkthumbnailer['images'].first['src'], :height => "300px" %>
+									      <div class="card-body card-content-display">
+										      <strong><%= answer.question.linkthumbnailer['title'] %></strong>
+										      <a href="<%= answer.question.source_url %>" target="_blank">Source link</a>
+										     	 <div><%= answer.question.linkthumbnailer['description'] %></div> 
+												</div>
+					      			<% end %>
+						      		<div class="card-body card-content-display">
+										    <span>
+											    <%= link_to "Read", question_path(answer.question), :class => "btn btn-success btn-sm" %>
+											    <i class="far fa-hand-point-up" style="float: right;">&nbsp;<%= answer.question.total_vote %></i>
+										    </span>
+						      			<!-- make a line to seperate -->
+						      			<hr />
+										    <p><i class="fas fa-question-circle"></i>&nbsp;<strong><%= answer.question.title %></strong></p>
+												<p>
+													<i class="fas fa-reply"></i>
+													<em>&nbsp;by <%= answer.user.nickname %> @ <%= answer.created_at.to_date %></em>
+													<span class="badge badge-dark" id="tag">#<%= answer.question.category.name %></span>
+												</p>
+									      <div style="padding-bottom: 1rem;"></div>
+											</div>
+										</div>
 									</div>
-				      			<% end %>
-				      			<hr /> 
-										<strong> Answered date: <%= answer.created_at.to_date %></strong><br />
-				      		<div style="padding: 1rem;">
-						      	<span><%= link_to "Read", question_path(answer.question), :class => "btn btn-success btn-sm" %></span>
-								     <span class="badge badge-dark" id="tag">#<%= answer.question.category.name %> </span>
-								  </div>
-								     <span> No. <strong><%= index + 1 %></strong> </span>
-										 <span style="float: right;">Total Vote : <strong><%= answer.question.total_vote %></strong></span>
-									</div>
-						 </div>
-						 <br />
-						 <% end %>
-						 </div>
+								</div>
+							<% end %>
+										    
+														
+
 						</div>
 					</div>
-				</div> 
+				</div>
+				<button class="btn btn-outline-success btn-block">Show more</button>
   		</div>
+
   	<div class="col-lg-1"></div>
   </div>
 

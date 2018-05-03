@@ -5,39 +5,38 @@
 </head>
 <body>
 	<%= render partial: '/questions/form' %>
-	<h1>Question - Show</h1>
+	
+	<h1 class="show-h"><%= @question.title %></h1>
 	<div class="row">
   <div class="col-lg-2"></div>
-
     <div class="col-lg-5">
-      <div class="jumbotron jumbotron-fluid">
+      <div class="jumbotron jumbotron-fluid" style="background-color: rgba(122, 248, 91, 0.9); border-radius: 2%;">
 	      <div class="card-body">
-		    	<h1> Source </h1>
+		    	<!-- <p class="post-id">Source<p> -->
 					<div class="text-center">
 						<% if @website['images'].present? %>
 						  <%= image_tag @website['images'].first['src'], :class => "question-show-image" %><br/>
-							<%= @website['title'] %><br/>
-						  <%= @website['description'] %>
+						  <div class="card-body card-content-display" style="text-align: left;">
+				      	<strong><%= @website['title'] %></strong>
+				      	<a href="<%= @website['source_url'] %>" target="_blank">Source from</a>
+							  <div><%= @website['description'] %></div> 
+							</div>
 					  <% end %>
 				  </div>
 			  </div>
 		  </div>
 
-		  <div class="jumbotron jumbotron-fluid">
+		  <div class="jumbotron jumbotron-fluid" style="background-color: rgba(135, 216, 211, 0.85); padding: 1rem; border-radius: 2%;">
 	      <div class="container">
 					<div>
-		       	<p>Answered by :</p>
-		       	<% if @respondent_avatar.avatar.url.blank? %>
-		        	<%= image_tag @respondent_avatar.avatar.url(:thumb), :class => "question_avatar" %>
-	        	<% else %>
-					 		<%= image_tag "no-avatar.png", :width => "100" %> 
-					 	<% end %>
-        		<p class="question_avatar">Respondent : <%= @respondent_avatar.nickname %></p>
+
+	        	<%= image_tag @respondent_avatar.avatar.url(:thumb), :class => "question_avatar" %><br/>
+	        	<strong style="color: darkblue;"><%= @respondent_avatar.nickname %></strong><br/>
 						<!-- answer display section -->
-						<h2>Answer :</h2>
 						<% if @question.answer.present? %>
-							<%= @question.answer.response.html_safe %><br/>
-								<p>Answered at: <%= @question.answer.created_at.to_date %></p>
+							<p><%= @question.answer.response.html_safe %></p>
+			       	<i class="fas fa-reply"></i>
+							<em>&nbsp;@ <%= @question.answer.created_at.to_date %></em><br/>
 							<% elsif @question_expired > Time.now  %>
 								<strong><%= "This question is in voting stage" %></strong>
 							<% else %>
@@ -47,45 +46,48 @@
 				</div>
 			</div>
 
+
 		</div>
 
     <div class="col-lg-4">
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
+      <div class="jumbotron jumbotron-fluid" style="background-color: lightgrey; border-radius: 2%;">
+        <div class="container" id="question-show-container">
 
 
-        Question #<%= @question.id %> by:<br/>
-		       <%= image_tag @interragator_avatar.avatar.url(:thumb), :class => "question_avatar" %><br/>    
-		       <%= @interragator_avatar.nickname %><br/>
-         <span style="font-size: 1em;"><em>Created at:
-                      <%= @question.created_at.to_date %></em>
+	        <p class="post-id">#<%= @question.id %></p>
+        	<%= image_tag @interragator_avatar.avatar.url(:thumb), :class => "question_avatar" %><br/>  
+	      	<strong style="color: darkblue;"><%= @interragator_avatar.nickname %></strong><br/>
+        	<span style="font-size: 1em;">
+        	<em>Created at <%= @question.created_at.to_date %></em>
+				  <div class="badge badge-secondary" id="tag">#<%= @question.category.name %></div>
 				  <h3><%= @question.title %></h3>
-				  <p>Category :<%= @question.category.name %></p>
-					#<%= @question.id %><br/>
-				  Description :<%= @question.description.html_safe %>
+				  <p><%= @question.description.html_safe %></p>
 					
 					<div>
 						<!-- vote button -->
 						<% if Time.now < @question_expired && @user_voted == false %>
 							<%= form_for [@question, Vote.new] do |f| %>
-								<button type="submit" class="btn btn-success"><%= "Vote" %></button>
+								<button type="submit" class="btn btn-success btn-block">
+									<%= "Vote" %>
+								</button>
 							<% end %>
 						<% elsif @user_voted == true %>
-							<em>Thank you for your vote!</em>
+							<button type="submit" class="btn btn-secondary btn-block disabled">
+								<%= "Thank you for your vote" %>
+							</button>
 						<% else %>
-							<em>Vote expired</em>
+							<button type="submit" class="btn btn-danger btn-block disabled">
+								The vote are ended at <%= @question_expired.to_date %>
+							</button>
 						<% end %>
 					</div>
-
+					<br/>
 					<div>
 						<!-- vote count -->
-						Total vote : <%= @total_vote %>
+						<div>
+							<p class="far btn-block"><i class="far fa-hand-point-up"></i>&nbsp;<%= @total_vote %></p>
+						</div>
 					</div>
-					<br/>
-					<p>
-	          Voting ends at:
-	          <%= @question_expired.to_date %>
-          </p>
 				</div>
 			</div>
 		</div>
@@ -114,16 +116,18 @@
 		</div>
 	</div>
 
+<div class="form-signin-question">
 		<!-- answer input section -->
-		<% if Date.today - @question.created_at.to_date > 1.day %>
+		<% if Date.today - @question.created_at.to_date < 1.day %>
 			<%  ## COUNT QUESTION WITH MAX VOTES%>
 			<%	arr = Vote.all.map {|x| x.question_id} %>
 			<%	freq = arr.inject(Hash.new(0)) { |h,v| h[v] += 1; h } %>
 			<%	q = arr.max_by { |v| freq[v] }%>
 			<%	@question_max_votes = Question.find(q) %>
 			<% ## END %>
-
-				<% if @selected_respondent && current_user.respondent? && @pending_answer && @question_max_votes.id == @question.id %>
+				<!-- here to allow answer, just remove @question_max_votes.id... if this q not the most vote-->
+				<% if @selected_respondent && current_user.respondent? && @pending_answer %>
+				 <!-- && @question_max_votes.id == @question.id  -->
 			
 					  <%= form_for [@question, Answer.new] do |f| %>
 						  <%= f.trix_editor :response %>
@@ -135,6 +139,6 @@
 				<% end %>
 
 		<% end %>
-
+	</div>
 </body>
 </html>
